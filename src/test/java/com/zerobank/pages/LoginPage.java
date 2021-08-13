@@ -7,35 +7,29 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class LoginPage
-{
-    public LoginPage(){
+public class LoginPage {
 
-        PageFactory.initElements(Driver.getDriver(),this);
+    public LoginPage() {
+        PageFactory.initElements(Driver.getDriver(), this);
     }
 
-    @FindBy(id="user_login")
-    public WebElement userName;
+    WebDriverWait wait = new WebDriverWait(Driver.getDriver(), 10);
 
-    @FindBy(id="user_password")
-    public WebElement userPassword;
+    @FindBy(id = "user_login")
+    public WebElement usernameInput;
 
-    @FindBy(xpath = "//input[@class='btn btn-primary']")
+    @FindBy(id = "user_password")
+    public WebElement passwordInput;
+
+    @FindBy(xpath = "//input[@name='submit']")
     public WebElement loginButton;
 
-    WebDriverWait wait = new WebDriverWait(Driver.getDriver(),10);
+    @FindBy(xpath = "//div[@class='alert alert-error']")
+    public WebElement errorMessage;
 
-    @FindBy (xpath = "//button[@id='details-button']")
-    private WebElement advanced;
-
-    @FindBy (xpath = "//a[@id='proceed-link']")
-    private WebElement proceedLink;
-
-    public void resolveUnsecureConnections(){
-        wait.until(ExpectedConditions.visibilityOf(advanced));
-        advanced.click();
-        wait.until(ExpectedConditions.visibilityOf(proceedLink));
-        proceedLink.click();
-
+    public void login(String username, String password){
+        usernameInput.sendKeys(username);
+        passwordInput.sendKeys(password);
+        loginButton.click();
     }
 }

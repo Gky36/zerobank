@@ -3,7 +3,9 @@ package com.zerobank.utilities;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.CapabilityType;
 
 import java.util.concurrent.TimeUnit;
 
@@ -44,6 +46,15 @@ public class Driver
                     case "firefox":
                         WebDriverManager.firefoxdriver().setup();
                         driverPool.set(new FirefoxDriver());
+                        driverPool.get().manage().window().maximize();
+                        driverPool.get().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+                        break;
+                    case "chromeSSL":
+                        WebDriverManager.chromedriver().setup();
+                        ChromeOptions capability = new ChromeOptions();
+                        capability.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
+                        capability.setCapability(CapabilityType.ACCEPT_INSECURE_CERTS,true);
+                        driverPool.set(new ChromeDriver(capability));
                         driverPool.get().manage().window().maximize();
                         driverPool.get().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
                         break;
